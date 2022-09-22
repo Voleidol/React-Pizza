@@ -1,22 +1,11 @@
 import React from "react";
 
 function PizzaBlock({title, price, imageUrl, sizes, types}) {
-
+ 
   const typeNames = ['Тонкое', 'Традиционное'];
 
-  const typeZamena = () => {
-    for (let i = 0; i < types.length; i++) {
-      types[i] = typeNames[i];
-      console.log(typeNames[i])
-    }
-    return types
-  }
-
   const [onClickSizes, setOnClickSizes] = React.useState(0);
-
-  const clickSizes = (index) => {
-    setOnClickSizes(index)
-  }
+  const [onClickType, setOnClickType] = React.useState(0);
   
   return (
     <div className="pizza-block">
@@ -29,15 +18,15 @@ function PizzaBlock({title, price, imageUrl, sizes, types}) {
       <div className="pizza-block__selector">
         <ul>
           {
-            types.map((type, i) => (
-              <li onClick={() => clickSizes(i)} className={onClickSizes === i ? "active" : ""}>{typeZamena()}</li>
+            types.map((typeIndex, i) => (
+              <li key={typeIndex} onClick={() => setOnClickType(i)} className={onClickType === i ? "active" : ""}>{typeNames[typeIndex]}</li>
             ))
           }
         </ul>
         <ul>
           {
             sizes.map((size, i) => (
-              <li onClick={() => clickSizes(i)} className={onClickSizes === i ? "active" : ""}>{size} см.</li>
+              <li key={size} onClick={() => setOnClickSizes(i)} className={onClickSizes === i ? "active" : ""}>{size} см.</li>
             ))
           }
         </ul>

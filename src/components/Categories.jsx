@@ -23,6 +23,7 @@ function Categories() {
         {categories.map((item, i) => {
           return (
             <li
+              key={i}
               onClick={() => onClickCategory(i)}
               className={activeindex === i ? "active" : ""}>
               {item}
