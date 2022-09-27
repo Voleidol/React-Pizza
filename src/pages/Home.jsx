@@ -33,9 +33,10 @@ const Home = () => {
     const sortBy = sortType.sortProperty.replace('-', '');
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
+    const search = searchValue ? `&search=${searchValue}` : '';
 
     fetch(
-      `${urlMockapi}/items?${category}&sortBy=${sortBy}&order=${order}`
+      `${urlMockapi}/items?${category}&sortBy=${sortBy}&order=${order}${search}`
     )
       .then((res) => res.json())
       .then((json) => {
@@ -43,13 +44,16 @@ const Home = () => {
         setLoading(false);
       });
       window.scrollTo(0, 0);
-  }, [categoryId, sortType]);
+  }, [categoryId, sortType, searchValue]);
 
-  const pizzas = items.filter((obj) => {
-    return (
-      obj.title.includes = searchValue
-    )
-  }).map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+  const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+
+  // const pizzas = items.filter((obj) => { подходит для статичного массива!!
+  //   if(obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
+  //     return true
+  //   }
+  //   return false
+  // }).map((obj) => <PizzaBlock key={obj.id} {...obj} />);
 
   const skeletons = [...Array(6)].map((_, index) => <Skeleton key={index} />);
 
