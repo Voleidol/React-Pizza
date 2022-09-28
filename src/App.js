@@ -9,11 +9,11 @@ import "./scss/app.scss";
 
 function App() {
   const [searchValue, setSearchValue] = React.useState("");
- 
+
   return (
-    <AppContext.Provider value={{searchValue, setSearchValue}}>
-      <div className="wrapper">
-        <Header searchValue={searchValue} setSearchValue={setSearchValue}/>
+    <div className="wrapper">
+      <AppContext.Provider value={{ searchValue, setSearchValue }}>
+        <Header />
         <div className="content">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -21,8 +21,8 @@ function App() {
             <Route path="*" element={<NotFoundBlock />} />
           </Routes>
         </div>
-      </div>
-    </AppContext.Provider>    
+      </AppContext.Provider>
+    </div>
   );
 }
 
