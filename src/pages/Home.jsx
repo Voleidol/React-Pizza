@@ -14,7 +14,7 @@ const Home = () => {
   const [categoryId, setCategoryId] = React.useState(0);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [sortType, setSortType] = React.useState({
-    name: "популярности",
+    name: "популярности (DESC)",
     sortProperty: "rating",
   });
   const { searchValue } = React.useContext(AppContext);
