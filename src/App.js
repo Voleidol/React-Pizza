@@ -5,14 +5,31 @@ import NotFoundBlock from "./components/NotFoundBlock";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import AppContext from "./context";
+import { useSelector, useDispatch } from "react-redux";
 import "./scss/app.scss";
+import { decrement, increment } from "./redux/slices/filterSlice";
 
 function App() {
   const [searchValue, setSearchValue] = React.useState("");
+  const count = useSelector((state) => state.counter.count)
+  const dispatch = useDispatch()
 
   return (
     <div className="wrapper">
-      <AppContext.Provider value={{ searchValue, setSearchValue }}>
+      <button
+        aria-label="Increment value"
+        onClick={() => dispatch(increment())}
+      >
+        Increment
+      </button>
+      <span>{count}</span>
+      <button
+        aria-label="Decrement value"
+        onClick={() => dispatch(decrement())}
+      >
+        Decrement
+      </button>
+      {/* <AppContext.Provider value={{ searchValue, setSearchValue }}>
         <Header />
         <div className="content">
           <Routes>
@@ -21,7 +38,7 @@ function App() {
             <Route path="*" element={<NotFoundBlock />} />
           </Routes>
         </div>
-      </AppContext.Provider>
+      </AppContext.Provider> */}
     </div>
   );
 }
