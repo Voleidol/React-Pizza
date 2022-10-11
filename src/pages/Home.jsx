@@ -1,17 +1,24 @@
 import React from "react";
-
-
+import { useDispatch, useSelector } from "react-redux";
 import Categories from "../components/Categories";
 import Pagination from "../components/Pagination/indes";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Sort from "../components/Sort";
 import AppContext from "../context";
+import { setCategoryId } from "../redux/slices/filterSlice";
 
 const Home = () => {
+  // const [categoryId, setCategoryId] = React.useState(0);
+  const categoryId = useSelector(state => state.filter.categoryId);
+  const dispatch = useDispatch();
+  const onClickCategory = (id) => {
+    dispatch(setCategoryId(id));
+  };
+
+  
   const [items, setItems] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-  const [categoryId, setCategoryId] = React.useState(0);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [sortType, setSortType] = React.useState({
     name: "популярности (DESC)",
@@ -64,7 +71,7 @@ const Home = () => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories value={categoryId} onChangeCategory={(id) => setCategoryId(id)} categories={categories} />
+        <Categories value={categoryId} onChangeCategory={onClickCategory} categories={categories} />
         <Sort value={sortType} onChangeSort={(id) => setSortType(id)} />
       </div>
       <h2 className="content__title">{categories[categoryId]} пиццы</h2>
