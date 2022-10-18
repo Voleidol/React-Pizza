@@ -10,8 +10,9 @@ import { setCategoryId } from "../redux/slices/filterSlice";
 
 const Home = () => {
   // const [categoryId, setCategoryId] = React.useState(0);
-  const categoryId = useSelector(state => state.filter.categoryId);
   const dispatch = useDispatch();
+  const categoryId = useSelector(state => state.filter.categoryId);
+  const sortType = useSelector(state => state.filter.sort.sortProperty);
   const onClickCategory = (id) => {
     dispatch(setCategoryId(id));
   };
@@ -20,10 +21,7 @@ const Home = () => {
   const [items, setItems] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [sortType, setSortType] = React.useState({
-    name: "популярности (DESC)",
-    sortProperty: "rating",
-  });
+ 
   const { searchValue } = React.useContext(AppContext);
   
   const categories = [
@@ -40,8 +38,8 @@ const Home = () => {
 
     const urlMockapi = 'https://632d6dfe0d7928c7d24ae553.mockapi.io';
     
-    const sortBy = sortType.sortProperty.replace('-', '');
-    const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
+    const sortBy = sortType.replace('-', '');
+    const order = sortType.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `search=${searchValue}` : '';
     const pageNumber = `page=${currentPage}&limit=4`;
@@ -72,7 +70,7 @@ const Home = () => {
     <div className="container">
       <div className="content__top">
         <Categories value={categoryId} onChangeCategory={onClickCategory} categories={categories} />
-        <Sort value={sortType} onChangeSort={(id) => setSortType(id)} />
+        <Sort />
       </div>
       <h2 className="content__title">{categories[categoryId]} пиццы</h2>
       <div className="content__items">
