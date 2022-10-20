@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Categories from "../components/Categories";
@@ -9,19 +10,16 @@ import AppContext from "../context";
 import { setCategoryId } from "../redux/slices/filterSlice";
 
 const Home = () => {
-  // const [categoryId, setCategoryId] = React.useState(0);
   const dispatch = useDispatch();
-  const categoryId = useSelector(state => state.filter.categoryId);
-  const sortType = useSelector(state => state.filter.sort.sortProperty);
-  const onClickCategory = (id) => {
-    dispatch(setCategoryId(id));
-  };
+  const {categoryId, sort} = useSelector(state => state.filter);
+  const sortType = sort.sortProperty;
 
-  
   const [items, setItems] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [currentPage, setCurrentPage] = React.useState(1);
- 
+  const onClickCategory = (id) => {
+    dispatch(setCategoryId(id));
+  };
   const { searchValue } = React.useContext(AppContext);
   
   const categories = [
@@ -44,14 +42,22 @@ const Home = () => {
     const search = searchValue ? `search=${searchValue}` : '';
     const pageNumber = `page=${currentPage}&limit=4`;
 
-    fetch(
-      `${urlMockapi}/items?${pageNumber}&${category}&sortBy=${sortBy}&order=${order}&${search}`
-    )
-      .then((res) => res.json())
-      .then((json) => {
-        setItems(json);
+    // fetch(
+    //   `${urlMockapi}/items?${pageNumber}&${category}&sortBy=${sortBy}&order=${order}&${search}`
+    // )
+    //   .then((res) => res.json())
+    //   .then((json) => {
+    //     setItems(json);
+    //     setLoading(false);
+    //   });
+
+      axios.get(
+        `${urlMockapi}/items?${pageNumber}&${category}&sortBy=${sortBy}&order=${order}&${search}`
+      ).then(res => {
+        setItems(res.data);
         setLoading(false);
       });
+      
       window.scrollTo(0, 0);
   }, [categoryId, sortType, searchValue, currentPage]);
 
