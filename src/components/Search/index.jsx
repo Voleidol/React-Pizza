@@ -1,6 +1,11 @@
 import React from "react";
 import AppContext from "../../context";
+import debounce from'lodash.debounce';
 import styles from "./Search.module.scss";
+
+const testDebounce = debounce(() => {
+  console.log("HELLO")
+}, 500);
 
 const Search = () => {
     
@@ -11,6 +16,10 @@ const Search = () => {
     setSearchValue('');
     // document.querySelector('input').focus();
     inputRef.current.focus();
+  };
+  const onChangeInput = (e) => {
+    setSearchValue(e.target.value)
+    testDebounce()
   };
   
   return (
@@ -27,7 +36,8 @@ const Search = () => {
       </svg>
       <input
         ref={inputRef}
-        onChange={(e) => setSearchValue(e.target.value)}
+        // onChange={(e) => setSearchValue(e.target.value)}
+        onChange={onChangeInput}
         className={styles.input}
         placeholder="Поиск пиццы..."
         value={searchValue}
