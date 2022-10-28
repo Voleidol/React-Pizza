@@ -3,24 +3,30 @@ import AppContext from "../../context";
 import debounce from'lodash.debounce';
 import styles from "./Search.module.scss";
 
-const testDebounce = debounce(() => {
-  console.log("HELLO")
-}, 500);
-
 const Search = () => {
-    
-  const { searchValue, setSearchValue } = React.useContext(AppContext);
+  const [value, setValue] = React.useState('');
+  const { setSearchValue } = React.useContext(AppContext);
   const inputRef = React.useRef();
 
   const onClickClear = () => {
+    setValue('');
     setSearchValue('');
-    // document.querySelector('input').focus();
-    inputRef.current.focus();
+    // document.querySelector('input').focus(); // Так не правильно, но это будет работать
+    inputRef.current.focus(); // Так правильно, тоже будет работать
   };
+
+  const updateSearchValue = React.useCallback ( //не пересоздаёт функцию, а создаёт один раз и запихивает в testDebounce
+    debounce((str) => { // debounce - похоже на setTimeout, откладывает функцию, чтобы не было запросов на бэк, при каждом изменении input 
+      setSearchValue(str);
+    }, 300),
+    [],
+  );
+
   const onChangeInput = (e) => {
-    setSearchValue(e.target.value)
-    testDebounce()
-  };
+    setValue(e.target.value);
+    updateSearchValue(e.target.value);
+  }
+    
   
   return (
     <div className={styles.root}>
@@ -40,10 +46,10 @@ const Search = () => {
         onChange={onChangeInput}
         className={styles.input}
         placeholder="Поиск пиццы..."
-        value={searchValue}
+        value={value}
       />
 
-      {searchValue && (
+      {value && (
         <svg
           onClick={onClickClear}
           className={styles.clearIcon}
