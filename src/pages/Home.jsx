@@ -1,6 +1,8 @@
 import axios from "axios";
+import qs from "qs";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Categories from "../components/Categories";
 import Pagination from "../components/Pagination/indes";
 import PizzaBlock from "../components/PizzaBlock";
@@ -10,6 +12,7 @@ import AppContext from "../context";
 import { setCategoryId, setCurrentPage } from "../redux/slices/filterSlice";
 
 const Home = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const {categoryId, sort, currentPage} = useSelector(state => state.filter);
   const sortType = sort.sortProperty;
@@ -21,8 +24,8 @@ const Home = () => {
     dispatch(setCategoryId(id));
   };
 
-  const onChangePage = (number) => {
-    dispatch(setCurrentPage(number));
+  const onChangePage = (page) => {
+    dispatch(setCurrentPage(page));
   };
 
   const { searchValue } = React.useContext(AppContext);
