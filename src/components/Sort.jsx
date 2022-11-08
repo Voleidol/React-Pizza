@@ -23,17 +23,18 @@ function Sort() {
     setOpen(!open);
   }
 
-  
-
   React.useEffect(() =>  {
     const handleClickOutside = (event) => {
       if (!event.path.includes(sortRef.current)) {
         setOpen(false);
-        console.log('as')
       }
     }
     
-    document.body.addEventListener('click', handleClickOutside)  
+    document.body.addEventListener('click', handleClickOutside);  
+    
+    return () => { // Сработает при CompanentDidMount (удалении) компаненты 
+      document.body.removeEventListener('click', handleClickOutside)
+    }
   }, []);
 
   return (
