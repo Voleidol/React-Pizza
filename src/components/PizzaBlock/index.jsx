@@ -1,10 +1,27 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem } from "../../redux/slices/cartSlice";
 
-function PizzaBlock({ title, price, imageUrl, sizes, types }) {
-  const typeNames = ["Тонкое", "Традиционное"];
+const typeNames = ["Тонкое", "Традиционное"];
 
-  const [onClickSizes, setOnClickSizes] = React.useState(0);
-  const [onClickType, setOnClickType] = React.useState(0);
+function PizzaBlock({ id, title, price, imageUrl, sizes, types, rating }) {
+  const dispatch = useDispatch();
+  const {count} = useSelector((state) => state.cart.items.find((obj) => obj.id === id));
+  const [activeSize, setActiveSize] = React.useState(0);
+  const [activeType, setActiveType] = React.useState(0);
+  
+
+  const onClickAdd = () => {
+    const item = {
+      id,
+      title,
+      price,
+      imageUrl,
+      type: typeNames[activeType],
+      size: activeSize,
+    };
+    dispatch(addItem(item));
+  };
 
   return (
     <div className="pizza-block-wrapper">
@@ -16,8 +33,8 @@ function PizzaBlock({ title, price, imageUrl, sizes, types }) {
             {types.map((typeIndex, i) => (
               <li
                 key={typeIndex}
-                onClick={() => setOnClickType(i)}
-                className={onClickType === i ? "active" : ""}
+                onClick={() => setActiveType(i)}
+                className={activeType === i ? "active" : ""}
               >
                 {typeNames[typeIndex]}
               </li>
@@ -27,8 +44,8 @@ function PizzaBlock({ title, price, imageUrl, sizes, types }) {
             {sizes.map((size, i) => (
               <li
                 key={size}
-                onClick={() => setOnClickSizes(i)}
-                className={onClickSizes === i ? "active" : ""}
+                onClick={() => setActiveSize(i)}
+                className={activeSize === i ? "active" : ""}
               >
                 {size} см.
               </li>
@@ -50,8 +67,8 @@ function PizzaBlock({ title, price, imageUrl, sizes, types }) {
                 fill="white"
               />
             </svg>
-            <span>Добавить</span>
-            <i>0</i>
+            <span onClick={() => onClickAdd()}>Добавить</span>
+            <i>{count}</i>
           </button>
         </div>
       </div>
